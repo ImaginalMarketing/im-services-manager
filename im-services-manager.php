@@ -12,8 +12,9 @@ GitHub Plugin URI: https://github.com/ImaginalMarketing/im-services-manager/
 
 require_once( 'BFIGitHubPluginUploader.php' );
 if ( is_admin() ) {
-    new BFIGitHubPluginUpdater( __FILE__, 'bfintal', "BFI-Core" );
+    new BFIGitHubPluginUpdater( __FILE__, 'ImaginalMarketing', "im-services-manager" );
 }
+
 
 
 ///// A D D   C S S   T O   H E A D E R 
