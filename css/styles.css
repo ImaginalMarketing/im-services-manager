@@ -2,16 +2,29 @@
 
 /* Services */
 
-	img.serveimg { margin-bottom: 50px; margin-top: 5px; }
+table.im_service_table {
+	margin: 50px 0;
+}
 
-	table.im_service_table th { background: #3F3F4E; color: #E5E4E7; text-transform: uppercase; font-weight: 500; font-family: 'brandon-grotesque', sans-serif; text-align: left; }
+table.im_service_table th {
+	background: #82c2e1;
+	color: #fff;
+	text-transform: uppercase;
+	font-weight: 500;
+	text-align: left;
+	padding: 10px 15px;
+}
 
-	table.im_service_table th p { display: none; }
-
-	.im_service_table td { padding: 10px 15px; font-size: 0.9em; }
-
-	.im_service_table th { font-size: 0.6em; }
-	
-	.im_service_table td { font-size: 0.75em; }
-	
-  	.im_service_table td.serv_price { width: 7%;}
+.im_service_table td {
+	padding: 15px 15px;
+	text-align: left;
+}
+.im_service_table tbody tr { border-bottom: 1px dotted #aaa; }
+.im_service_table td.serv_title { font-weight: bold; }
+.im_service_table tr.has_desc {border-bottom: none; }
+.im_service_table tr.has_desc td { padding-bottom: 0; }
+.im_service_table td.serv_desc {
+	font-size: 0.9em;
+	font-style: italic;
+	padding-top: 0;
+}

@@ -1,11 +1,10 @@
 <?php
 /*
-Plugin Name: Taxonomy Meta
-Plugin URI: http://www.deluxeblogtips.com/taxonomy-meta-script-for-wordpress
+Taxonomy Meta
 Description: Add meta values to terms, mimic custom post fields
 Version: 1.2
 Author: Rilwis
-Author URI: http://www.deluxeblogtips.com
+Author URI: http://www.deluxeblogtips.com/taxonomy-meta-script-for-wordpress
 License: GPL2+
 */
 
