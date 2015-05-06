@@ -2,7 +2,7 @@
 /*
 Plugin Name: IM Services Manager
 Plugin URI: https://github.com/ImaginalMarketing/im-services-manager/
-Version: 1.0.1
+Version: 1.0.2
 Author: Michael Milstead
 Description: A simple <em>Services</em> custom post type with categories and custom meta. Use the shortcode <code>[im-services category="sample-category" location="sample-location"]</code> to output basic tables with prices and descriptions. Tables can be targeted by any combination of a <code>#imst-sample-category</code> ID and <code>.im_service_table</code> class for easy CSS styling. Supports basic text descriptions for posts as well as categories. This plugin is currently dependent on the "Taxonomy Meta" Plugin which was included with this package.
 GitHub Plugin URI: https://github.com/ImaginalMarketing/im-services-manager/
