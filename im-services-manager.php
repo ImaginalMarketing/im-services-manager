@@ -2,7 +2,7 @@
 /*
 Plugin Name: IM Services Manager
 Plugin URI: https://github.com/ImaginalMarketing/im-services-manager/
-Version: 1.0.0
+Version: 1.0.1
 Author: Michael Milstead
 Description: A simple <em>Services</em> custom post type with categories and custom meta. Use the shortcode <code>[im-services category="sample-category" location="sample-location"]</code> to output basic tables with prices and descriptions. Tables can be targeted by any combination of a <code>#imst-sample-category</code> ID and <code>.im_service_table</code> class for easy CSS styling. Supports basic text descriptions for posts as well as categories. This plugin is currently dependent on the "Taxonomy Meta" Plugin which was included with this package.
 GitHub Plugin URI: https://github.com/ImaginalMarketing/im-services-manager/
@@ -14,6 +14,7 @@ require_once( 'BFIGitHubPluginUploader.php' );
 if ( is_admin() ) {
     new BFIGitHubPluginUpdater( __FILE__, 'ImaginalMarketing', "im-services-manager" );
 }
+
 
 
 
@@ -108,17 +109,17 @@ function create_servecat_hierarchical_taxonomy() {
 add_action( 'init', 'create_serveloc_hierarchical_taxonomy', 0 );
 function create_serveloc_hierarchical_taxonomy() {
   $labels = array(
-    'name' => _x( 'Service Locations', 'taxonomy general name' ),
-    'singular_name' => _x( 'Service Location', 'taxonomy singular name' ),
-    'search_items' =>  __( 'Search Service Locations' ),
-    'all_items' => __( 'All Service Locations' ),
-    'parent_item' => __( 'Parent Service Location' ),
-    'parent_item_colon' => __( 'Parent Service Location:' ),
-    'edit_item' => __( 'Edit Service Location' ), 
-    'update_item' => __( 'Update Service Location' ),
-    'add_new_item' => __( 'Add New Service Location' ),
-    'new_item_name' => __( 'New Service Location Name' ),
-    'menu_name' => __( 'Manage Service Locations' ),
+    'name' => _x( 'Shop Locations', 'taxonomy general name' ),
+    'singular_name' => _x( 'Shop Location', 'taxonomy singular name' ),
+    'search_items' =>  __( 'Search Shop Locations' ),
+    'all_items' => __( 'All Shop Locations' ),
+    'parent_item' => __( 'Parent Shop Location' ),
+    'parent_item_colon' => __( 'Parent Shop Location:' ),
+    'edit_item' => __( 'Edit Shop Location' ), 
+    'update_item' => __( 'Update Shop Location' ),
+    'add_new_item' => __( 'Add New Shop Location' ),
+    'new_item_name' => __( 'New Shop Location Name' ),
+    'menu_name' => __( 'Manage Shop Locations' ),
   ); 	
   register_taxonomy('servicelocations',array('service'), array(
     'hierarchical' => false,
@@ -132,40 +133,15 @@ function create_serveloc_hierarchical_taxonomy() {
 
 
 
-// custom taxonomy
-/*function create_servecat_hierarchical_taxonomy1() {
-  $labels = array(
-    'name' => _x( 'Service Locations', 'taxonomy general name' ),
-    'singular_name' => _x( 'Service Location', 'taxonomy singular name' ),
-    'search_items' =>  __( 'Search Service Locations' ),
-    'all_items' => __( 'All Service Locations' ),
-    'parent_item' => __( 'Parent Service Location' ),
-    'parent_item_colon' => __( 'Parent Service Location:' ),
-    'edit_item' => __( 'Edit Service Location' ), 
-    'update_item' => __( 'Update Service Location' ),
-    'add_new_item' => __( 'Add New Service Location' ),
-    'new_item_name' => __( 'New Service Location Name' ),
-    'menu_name' => __( 'Manage Service Locations' ),
-  ); 	
-  register_taxonomy('servicelocations',array('service'), array(
-    'hierarchical' => true,
-    'labels' => $labels,
-    'show_ui' => true,
-    'show_admin_column' => true,
-    'query_var' => true,
-    'rewrite' => array( 'slug' => 'servicelocations' ),
-  ));
-}
-*/
-
-
-
 
 ///// M E T A   B O X E S
 ////////////////////////////
-// ?? http://www.wpexplorer.com/creating-highly-customized-post-types-with-custom-meta-boxes/
+// Read these sometime so we don't have to rely on a plugin:
+// http://code.tutsplus.com/tutorials/reusable-custom-meta-boxes-part-1-intro-and-basic-fields--wp-23259
+// http://www.wpexplorer.com/creating-highly-customized-post-types-with-custom-meta-boxes/
 
-//http://www.deluxeblogtips.com/taxonomy-meta-script-for-wordpress/
+require 'taxonomy-meta.php';
+// from: http://www.deluxeblogtips.com/taxonomy-meta-script-for-wordpress/
 add_action( 'admin_init', 'im_register_taxonomy_meta_boxes' );
 /**
  * Register meta boxes
@@ -174,66 +150,68 @@ add_action( 'admin_init', 'im_register_taxonomy_meta_boxes' );
  */
 function im_register_taxonomy_meta_boxes()
 {
-	// Make sure there's no errors when the plugin is deactivated or during upgrade
-	if ( !class_exists( 'RW_Taxonomy_Meta' ) )
-		return;
-	$meta_sections = array();
-	// First meta section
-	$meta_sections[] = array(
-		'title'      => 'Service Tiers',             // section title
-		'taxonomies' => array('servicecategories', 'servicelocations'), // list of taxonomies. Default is array('category', 'post_tag'). Optional
-		'id'         => 'service_tiers',                 // ID of each section, will be the option name
-		'fields' => array(                             // List of meta fields
-			// TEXT
-			array(
-				'name' => 'service_tier1',                      // field name
-				'desc' => 'Simple text field',         // field description, optional
-				'id'   => 'service_tier1',                      // field id, i.e. the meta key
-				'type' => 'text',                      // field type
-				'std'  => 'Text',                      // default value, optional
-			),
-			array(
-				'name' => 'service_tier2',                      // field name
-				'desc' => 'Simple text field',         // field description, optional
-				'id'   => 'service_tier2',                      // field id, i.e. the meta key
-				'type' => 'text',                      // field type
-				'std'  => 'Text',                      // default value, optional
-			),
-			array(
-				'name' => 'service_tier3',                      // field name
-				'desc' => 'Simple text field',         // field description, optional
-				'id'   => 'service_tier3',                      // field id, i.e. the meta key
-				'type' => 'text',                      // field type
-				'std'  => 'Text',                      // default value, optional
-			),
-			array(
-				'name' => 'service_tier4',                      // field name
-				'desc' => 'Simple text field',         // field description, optional
-				'id'   => 'service_tier4',                      // field id, i.e. the meta key
-				'type' => 'text',                      // field type
-				'std'  => 'Text',                      // default value, optional
-			),
-			array(
-				'name' => 'service_tier5',                      // field name
-				'desc' => 'Simple text field',         // field description, optional
-				'id'   => 'service_tier5',                      // field id, i.e. the meta key
-				'type' => 'text',                      // field type
-				'std'  => 'Text',                      // default value, optional
-			),
-		),
-	);
-	foreach ( $meta_sections as $meta_section )
-	{
-		new RW_Taxonomy_Meta( $meta_section );
-	}
+    // Make sure there's no errors when the plugin is deactivated or during upgrade
+    if ( !class_exists( 'RW_Taxonomy_Meta' ) )
+        return;
+    $meta_sections = array();
+    // First meta section
+    $meta_sections[] = array(
+        'title'      => 'Service Tiers',             // section title
+        'taxonomies' => array('servicecategories', 'servicelocations'), // list of taxonomies. Default is array('category', 'post_tag'). Optional
+        'id'         => 'service_tiers',                 // ID of each section, will be the option name
+        'fields' => array(                             // List of meta fields
+            // TEXT
+            array(
+                'name' => 'Hide category header?',                      // field name
+                'id'   => 'hide_head',                      // field id, i.e. the meta key
+                'type' => 'checkbox',                      // field type
+            ),
+            array(
+                'name' => 'Level 1',                      // field name
+                'desc' => 'Simple text field',         // field description, optional
+                'id'   => 'service_tier1',                      // field id, i.e. the meta key
+                'type' => 'text',                      // field type
+                'std'  => '',                      // default value, optional
+            ),
+            array(
+                'name' => 'Level 2',                      // field name
+                'desc' => 'Simple text field',         // field description, optional
+                'id'   => 'service_tier2',                      // field id, i.e. the meta key
+                'type' => 'text',                      // field type
+                'std'  => '',                      // default value, optional
+            ),
+            array(
+                'name' => 'Level 3',                      // field name
+                'desc' => 'Simple text field',         // field description, optional
+                'id'   => 'service_tier3',                      // field id, i.e. the meta key
+                'type' => 'text',                      // field type
+                'std'  => '',                      // default value, optional
+            ),
+            array(
+                'name' => 'Level 4',                      // field name
+                'desc' => 'Simple text field',         // field description, optional
+                'id'   => 'service_tier4',                      // field id, i.e. the meta key
+                'type' => 'text',                      // field type
+                'std'  => '',                      // default value, optional
+            ),
+            array(
+                'name' => 'Level 5',                      // field name
+                'desc' => 'Simple text field',         // field description, optional
+                'id'   => 'service_tier5',                      // field id, i.e. the meta key
+                'type' => 'text',                      // field type
+                'std'  => '',                      // default value, optional
+            ),
+        ),
+    );
+    foreach ( $meta_sections as $meta_section )
+    {
+        new RW_Taxonomy_Meta( $meta_section );
+    }
 }
 
 
 
-
-
-
-
+// Define tier details
 function add_servicedetails_meta_box() {
     add_meta_box(
         'servicedetails_meta_box', // $id
@@ -259,34 +237,30 @@ function show_servicedetails_meta_box() {
         // begin a table row with
         echo '
             <tr>
-            <th><label for="service_price1">Price 1</label></th>
+            <th><label for="service_price1">Level 1 Price</label></th>
             <td><input name="service_price1" id="service_price1" value="'.$service_price1.'" size="20" /><br/>
                 <span class="description">e.g. "$12.00", "Call for details", so on and so forth.</span></td>
             </tr>
             <tr>
-            <th><label for="service_price2">Price 2</label></th>
-            <td><input name="service_price2" id="service_price2" value="'.$service_price2.'" size="20" /><br/>
-                <span class="description">e.g. "$12.00", "Call for details", so on and so forth.</span></td>
+            <th><label for="service_price2">Level 2 Price</label></th>
+            <td><input name="service_price2" id="service_price2" value="'.$service_price2.'" size="20" /></td>
             </tr>
             <tr>
-            <th><label for="service_price3">Price 3</label></th>
-            <td><input name="service_price3" id="service_price3" value="'.$service_price3.'" size="20" /><br/>
-                <span class="description">e.g. "$12.00", "Call for details", so on and so forth.</span></td>
+            <th><label for="service_price3">Level 3 Price</label></th>
+            <td><input name="service_price3" id="service_price3" value="'.$service_price3.'" size="20" /></td>
             </tr>
             <tr>
-            <th><label for="service_price4">Price 4</label></th>
-            <td><input name="service_price4" id="service_price4" value="'.$service_price4.'" size="20" /><br/>
-                <span class="description">e.g. "$12.00", "Call for details", so on and so forth.</span></td>
+            <th><label for="service_price4">Level 4 Price</label></th>
+            <td><input name="service_price4" id="service_price4" value="'.$service_price4.'" size="20" /></td>
             </tr>
             <tr>
-            <th><label for="service_price5">Price 5</label></th>
-            <td><input name="service_price5" id="service_price5" value="'.$service_price5.'" size="20" /><br/>
-                <span class="description">e.g. "$12.00", "Call for details", so on and so forth.</span></td>
+            <th><label for="service_price5">Level 5 Price</label></th>
+            <td><input name="service_price5" id="service_price5" value="'.$service_price5.'" size="20" /></td>
             </tr>
             <tr>
             <th><label for="service_description">Description</label></th>
             <td><textarea name="service_description" id="service_description" cols="60" rows="4">'.$service_description.'</textarea><br/> 
-                <span class="description">A mere description for this service, if you\'re so inclined.</span></td>
+                <span class="description">A description for this service, if you\'re so inclined.</span></td>
             </tr>';
     echo '</table>';
 }
@@ -359,28 +333,43 @@ add_action('save_post', 'save_service_meta');
 ////////////////////////////
 function wp_services_list($atts){
     // paramater to grab category id input from the user
-   extract(shortcode_atts(array(
-      'category' => NULL,
-      'location' => NULL,
-   ), $atts));
-   // gather posts into array
-    $args = array(
-        'post_type' => 'service',
-        'orderby' => 'menu_order',
-        'order' => 'ASC',
-'posts_per_page' => -1,
-       'tax_query'=>array(array('taxonomy'=>'servicelocations',
-                    'field'=>'slug',
-                    'terms'=>$location
-                    ),
-                    array('taxonomy'=>'servicecategories',
-                    'field'=>'slug',
-                    'terms'=>$category
-                    ))
-        );
+    extract(shortcode_atts(array(
+        'category' => NULL,
+        'location' => NULL,
+    ), $atts));
+    // are there locations? if not, ignore that taxonomy or else you get blank tables
+    if (isset($location)) {
+        // gather posts into array
+        $args = array(
+            'post_type' => 'service',
+            'orderby' => 'menu_order',
+            'order' => 'ASC',
+            'posts_per_page' => -1,
+            'tax_query'=>array(array('taxonomy'=>'servicelocations',
+                        'field'=>'slug',
+                        'terms'=>$location
+                        ),
+                        array('taxonomy'=>'servicecategories',
+                        'field'=>'slug',
+                        'terms'=>$category
+                        ))
+            );
+    } else {
+        // gather posts into array
+        $args = array(
+            'post_type' => 'service',
+            'orderby' => 'menu_order',
+            'order' => 'ASC',
+            'posts_per_page' => -1,
+            'tax_query'=>array(array('taxonomy'=>'servicecategories',
+                        'field'=>'slug',
+                        'terms'=>$category
+                        ))
+            );
+    }
     $postArray = get_posts( $args );
     // get current category
-   $getservices = query_posts(array('post_type' => 'service', 'taxonomy' => 'servicecategories', 'term' => $category, 'orderby' => 'menu_order', 'order' => 'ASC','posts_per_page' => -1));
+    $getservices = query_posts(array('post_type' => 'service', 'taxonomy' => 'servicecategories', 'term' => $category, 'orderby' => 'menu_order', 'order' => 'ASC','posts_per_page' => -1));
     global $post;
     foreach ($getservices as $post) {
         $terms = get_the_terms( $post->ID, 'servicecategories' ) ;
@@ -404,25 +393,26 @@ function wp_services_list($atts){
 	$tier3 = $meta['service_tier3'];
 	$tier4 = $meta['service_tier4'];
 	$tier5 = $meta['service_tier5'];
+    if (isset($meta['hide_head'])) { // hide thead?
+        $hide_head = ' style="display: none";';
+    } else { $hide_head = ''; }
 	echo $value; // if you want to show
 
     // let's start displaying stuff
     // use concatenated returns instead of echo to make shortcode output in correct/expected spots on page
-    /* Old one -- $returnString = '<table id="imst-'.$category.'" class="table im_service_table" width="100%">
-            <thead>
-                <tr>
-                    <th colspan="6"><h3>'.$service_category['name'].'</h3>
-                        <p>'.$service_category['description'].'</p></th>
-                </tr>
-            </thead>
-            <tbody>'; */
+    // $num_col will help count the columns and add blank cells in case different items have a different number of levels
     $returnString = '<table id="imst-'.$category.'" class="table im_service_table" width="100%">
-            <thead>
+            <thead'.$hide_head.'>
                 <tr>
-                    <th>Service</th>';
+                    <th><h3>'.$service_category['name'].'</h3>';
+                    if (strlen($service_category['description']) > 0) {
+                        $returnString .= '<p>'.$service_category['description'].'</p></th>';
+                    }
+                        
+                    // if you know the # of columns, create them as categories in WP anyway, else fields might display weird since thead can't detect tbody cells entry  below here
                     if (strlen($tier1) > 0) {
                     	$returnString .= '<th width="15%">'.$tier1.'</th>';
-                    } else { $returnString .= '<th></th>'; }
+                    } else { $returnString .= '<th colspan="4"></th>'; }
                     if (strlen($tier2) > 0) {
                     	$returnString .= '<th width="15%">'.$tier2.'</th>';
                     } else { $returnString .= ''; }
@@ -448,25 +438,47 @@ function wp_services_list($atts){
         $service_price4 = get_post_meta($post->ID, 'service_price4', true); 
         $service_price5 = get_post_meta($post->ID, 'service_price5', true); 
         $service_description = get_post_meta($post->ID, 'service_description', true);
-        $returnString .= '  <tr>
-                    <td>'.$service_title.'<br/>
-                        <em><small>'.$service_description.'</small></em></td>';
-                    if (strlen($service_price1) > 0) {
-                    	$returnString .= '<td class="serv_price" width="15%">'.$service_price1.'</td>';
-                    } elseif (strlen($tier1) > 0) { $returnString .= '<td></td>'; }
-                    if (strlen($service_price2) > 0) {
-                    	$returnString .= '<td class="serv_price" width="15%">'.$service_price2.'</td>';
-                    } elseif (strlen($tier2) > 0) { $returnString .= '<td></td>'; }
-                    if (strlen($service_price3) > 0) {
-                    	$returnString .= '<td class="serv_price" width="15%">'.$service_price3.'</td>';
-                    } elseif (strlen($tier3) > 0) { $returnString .= '<td></td>'; }
-                    if (strlen($service_price4) > 0) {
-                    	$returnString .= '<td class="serv_price" width="15%">'.$service_price4.'</td>';
-                    } elseif (strlen($tier4) > 0) { $returnString .= '<td></td>'; }
+        // this 'if' is just for styling -- if there's a desc, hide the tr's bottom border
+        if (strlen($service_description) > 0) {
+            $returnString .= '<tr class="has_desc">';
+        } else { $returnString .= '<tr>'; }
+        $returnString .= '<td class="serv_title">'.$service_title.'</td>';
+                    // compensate for uneven columns during output
                     if (strlen($service_price5) > 0) {
-                    	$returnString .= '<td class="serv_price" width="15%">'.$service_price5.'</td>';
-                    } elseif (strlen($tier5) > 0) { $returnString .= '<td></td>'; }
+                        $price_col5 = '<td class="serv_price" width="15%">'.$service_price5.'</td>';
+                        $price_col4 = '<td></td>';
+                        $price_col3 = '<td></td>';
+                        $price_col2 = '<td></td>';
+                        $price_col1 = '<td></td>';
+                    } elseif (strlen($tier5) > 0) { $price_col5 = '<td></td>'; }
+
+                    if (strlen($service_price4) > 0) {
+                        $price_col4 = '<td class="serv_price" width="15%">'.$service_price4.'</td>';
+                        $price_col3 = '<td></td>';
+                        $price_col2 = '<td></td>';
+                        $price_col1 = '<td></td>';
+                    } elseif (strlen($tier4) > 0) { $price_col4 = '<td></td>'; }
+
+                    if (strlen($service_price3) > 0) {
+                        $price_col3 = '<td class="serv_price" width="15%">'.$service_price3.'</td>';
+                        $price_col2 = '<td></td>';
+                        $price_col1 = '<td></td>';
+                    } elseif (strlen($tier3) > 0) { $price_col3 = '<td></td>'; }
+
+                    if (strlen($service_price2) > 0) {
+                        $price_col2 = '<td class="serv_price" width="15%">'.$service_price2.'</td>';
+                        $price_col1 = '<td></td>';
+                    } elseif (strlen($tier2) > 0) { $price_col2 = '<td></td>'; }
+
+                    if (strlen($service_price1) > 0) {
+                        $price_col1 = '<td class="serv_price" width="15%">'.$service_price1.'</td>';
+                    } elseif (strlen($tier1) > 0) { $price_col1 = '<td></td>'; }
+                    $returnString .= $price_col1.$price_col2.$price_col3.$price_col4.$price_col5;
+
         $returnString .= '        </tr>';
+        if (strlen($service_description) > 0) {
+            $returnString .= '<tr class="serv_desc-row"><td class="serv_desc" width="100%" colspan="5">'.$service_description.'</td></tr>';
+        }
     }
     $returnString .= '  </tbody>
         </table>';
@@ -521,13 +533,31 @@ if ( 'post.php' == $pagenow || 'post-new.php' == $pagenow ) {
         }
     }
 }
-// Remove "post published / view" notification banner
-add_filter( 'post_updated_messages', 'remove_all_messages_so_16015959' );
-function remove_all_messages_so_16015959( $messages ) {
-    if( get_post_type() === 'service' ) {
-        return array();
-        // maybe put a nice IM banner here instead
-    }
+add_filter( 'post_updated_messages', 'rw_post_updated_messages' );
+// Set some custom status messages
+function rw_post_updated_messages( $messages ) {
+    $post             = get_post();
+    $post_type        = get_post_type( $post );
+    $post_type_object = get_post_type_object( $post_type );
+    $messages['service'] = array(
+        0  => '', // Unused. Messages start at index 1.
+        1  => __( 'Service item updated.' ),
+        2  => __( 'Custom field updated.' ),
+        3  => __( 'Custom field deleted.'),
+        4  => __( 'Service item updated.' ),
+        /* translators: %s: date and time of the revision */
+        5  => isset( $_GET['revision'] ) ? sprintf( __( 'Service item restored to revision from %s' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+        6  => __( 'Service item published.' ),
+        7  => __( 'Service item saved.' ),
+        8  => __( 'Service item submitted.' ),
+        9  => sprintf(
+            __( 'Service item scheduled for: <strong>%1$s</strong>.' ),
+            // translators: Publish box date format, see http://php.net/date
+            date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) )
+        ),
+        10 => __( 'Service item draft updated.' )
+    );
+    return $messages;
 }
 
 ?>
