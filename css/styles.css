@@ -16,10 +16,11 @@ table.im_service_table th {
 }
 
 .im_service_table td {
-	padding: 15px 15px;
+	padding: 15px 0;
 	text-align: left;
 }
-.im_service_table tbody tr { border-bottom: 1px dotted #aaa; }
+.im_service_table td.serv_price { padding: 15px 15px; }
+.im_service_table tbody tr { border-bottom: 1px solid #eaeaea; }
 .im_service_table td.serv_title { font-weight: bold; }
 .im_service_table tr.has_desc {border-bottom: none; }
 .im_service_table tr.has_desc td { padding-bottom: 0; }

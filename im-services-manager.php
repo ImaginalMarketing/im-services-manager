@@ -2,7 +2,7 @@
 /*
 Plugin Name: IM Services Manager
 Plugin URI: https://github.com/ImaginalMarketing/im-services-manager/
-Version: 1.0.2
+Version: 1.0.3
 Author: Michael Milstead
 Description: A simple <em>Services</em> custom post type with categories and custom meta. Use the shortcode <code>[im-services category="sample-category" location="sample-location"]</code> to output basic tables with prices and descriptions. Tables can be targeted by any combination of a <code>#imst-sample-category</code> ID and <code>.im_service_table</code> class for easy CSS styling. Supports basic text descriptions for posts as well as categories. This plugin is currently dependent on the "Taxonomy Meta" Plugin which was included with this package.
 GitHub Plugin URI: https://github.com/ImaginalMarketing/im-services-manager/
@@ -14,7 +14,6 @@ require_once( 'BFIGitHubPluginUploader.php' );
 if ( is_admin() ) {
     new BFIGitHubPluginUpdater( __FILE__, 'ImaginalMarketing', "im-services-manager" );
 }
-
 
 
 
@@ -412,7 +411,7 @@ function wp_services_list($atts){
                     // if you know the # of columns, create them as categories in WP anyway, else fields might display weird since thead can't detect tbody cells entry  below here
                     if (strlen($tier1) > 0) {
                     	$returnString .= '<th width="15%">'.$tier1.'</th>';
-                    } else { $returnString .= '<th colspan="4"></th>'; }
+                    } else { $returnString .= '<th colspan="5"></th>'; }
                     if (strlen($tier2) > 0) {
                     	$returnString .= '<th width="15%">'.$tier2.'</th>';
                     } else { $returnString .= ''; }
@@ -437,47 +436,29 @@ function wp_services_list($atts){
         $service_price3 = get_post_meta($post->ID, 'service_price3', true); 
         $service_price4 = get_post_meta($post->ID, 'service_price4', true); 
         $service_price5 = get_post_meta($post->ID, 'service_price5', true); 
+
+        // bundle prices in array
+        $prices = array($service_price1,$service_price2,$service_price3,$service_price4,$service_price5);
+
         $service_description = get_post_meta($post->ID, 'service_description', true);
         // this 'if' is just for styling -- if there's a desc, hide the tr's bottom border
         if (strlen($service_description) > 0) {
             $returnString .= '<tr class="has_desc">';
         } else { $returnString .= '<tr>'; }
         $returnString .= '<td class="serv_title">'.$service_title.'</td>';
-                    // compensate for uneven columns during output
-                    if (strlen($service_price5) > 0) {
-                        $price_col5 = '<td class="serv_price" width="15%">'.$service_price5.'</td>';
-                        $price_col4 = '<td></td>';
-                        $price_col3 = '<td></td>';
-                        $price_col2 = '<td></td>';
-                        $price_col1 = '<td></td>';
-                    } elseif (strlen($tier5) > 0) { $price_col5 = '<td></td>'; }
-
-                    if (strlen($service_price4) > 0) {
-                        $price_col4 = '<td class="serv_price" width="15%">'.$service_price4.'</td>';
-                        $price_col3 = '<td></td>';
-                        $price_col2 = '<td></td>';
-                        $price_col1 = '<td></td>';
-                    } elseif (strlen($tier4) > 0) { $price_col4 = '<td></td>'; }
-
-                    if (strlen($service_price3) > 0) {
-                        $price_col3 = '<td class="serv_price" width="15%">'.$service_price3.'</td>';
-                        $price_col2 = '<td></td>';
-                        $price_col1 = '<td></td>';
-                    } elseif (strlen($tier3) > 0) { $price_col3 = '<td></td>'; }
-
-                    if (strlen($service_price2) > 0) {
-                        $price_col2 = '<td class="serv_price" width="15%">'.$service_price2.'</td>';
-                        $price_col1 = '<td></td>';
-                    } elseif (strlen($tier2) > 0) { $price_col2 = '<td></td>'; }
-
-                    if (strlen($service_price1) > 0) {
-                        $price_col1 = '<td class="serv_price" width="15%">'.$service_price1.'</td>';
-                    } elseif (strlen($tier1) > 0) { $price_col1 = '<td></td>'; }
-                    $returnString .= $price_col1.$price_col2.$price_col3.$price_col4.$price_col5;
+        
+        // separate prices and filter if empty or not, then output   
+        foreach ($prices as $price) {
+            if ($price == '') {
+                $returnString .= '<td></td>';
+            } else {
+                $returnString .= '<td class="serv_price">'.$price.'</td>';
+            }
+        }
 
         $returnString .= '        </tr>';
         if (strlen($service_description) > 0) {
-            $returnString .= '<tr class="serv_desc-row"><td class="serv_desc" width="100%" colspan="5">'.$service_description.'</td></tr>';
+            $returnString .= '<tr class="serv_desc-row"><td class="serv_desc" width="100%" colspan="6">'.$service_description.'</td></tr>';
         }
     }
     $returnString .= '  </tbody>

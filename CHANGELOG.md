@@ -10,6 +10,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 _ _ _
 
+## [1.0.3] - 2015-06-08
+#### Added
+- Rewrote services table output to fix duplicate line item issues. (converted from a bunch of if/else statements to a small array handler)
+
+
 
 ## [1.0.0] - 2015-05-04
 #### Added
