@@ -2,7 +2,7 @@
 /*
 Plugin Name: IM Services Manager
 Plugin URI: https://github.com/ImaginalMarketing/im-services-manager/
-Version: 1.0.3
+Version: 1.0.4
 Author: Michael Milstead
 Description: A simple <em>Services</em> custom post type with categories and custom meta. Use the shortcode <code>[im-services category="sample-category" location="sample-location"]</code> to output basic tables with prices and descriptions. Tables can be targeted by any combination of a <code>#imst-sample-category</code> ID and <code>.im_service_table</code> class for easy CSS styling. Supports basic text descriptions for posts as well as categories. This plugin is currently dependent on the "Taxonomy Meta" Plugin which was included with this package.
 GitHub Plugin URI: https://github.com/ImaginalMarketing/im-services-manager/
@@ -403,10 +403,7 @@ function wp_services_list($atts){
     $returnString = '<table id="imst-'.$category.'" class="table im_service_table" width="100%">
             <thead'.$hide_head.'>
                 <tr>
-                    <th><h3>'.$service_category['name'].'</h3>';
-                    if (strlen($service_category['description']) > 0) {
-                        $returnString .= '<p>'.$service_category['description'].'</p></th>';
-                    }
+                    <th><h3>'.$service_category['name'].'</h3></th>';
                         
                     // if you know the # of columns, create them as categories in WP anyway, else fields might display weird since thead can't detect tbody cells entry  below here
                     if (strlen($tier1) > 0) {
@@ -424,9 +421,13 @@ function wp_services_list($atts){
                     if (strlen($tier5) > 0) {
                     	$returnString .= '<th width="15%">'.$tier5.'</th>';
                     } else { $returnString .= ''; }
-                $returnString .= '</tr>
-            </thead>
+                $returnString .= '</tr>';
+                if (strlen($service_category['description']) > 0) {
+                    $returnString .= '<tr class="head-desc"><td colspan="6"><p>'.$service_category['description'].'</p></td></tr>';
+                }
+            $returnString .= '</thead>
             <tbody>';
+
     wp_reset_query();
     // print each service line
     foreach($postArray as $post) {
