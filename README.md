@@ -1,3 +1,6 @@
+## DEPRICATED: USE "im-services" INSTEAD
+https://github.com/ImaginalMarketing/im-services
+
 # im-services-manager
 Wordpress services manager plugin for sites created by Imaginal Marketing Group
 
