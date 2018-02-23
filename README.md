@@ -1,4 +1,4 @@
-## DEPRICATED: USE "im-services" INSTEAD
+## DEPRECATED: USE "im-services" INSTEAD
 https://github.com/ImaginalMarketing/im-services
 
 # im-services-manager
